@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using Product.api.Domain.Models.Dtos.Product;
 using Product.api.Infrastructure.Data.Contexts;
 
 namespace Product.api.Controllers {
@@ -41,12 +42,38 @@ namespace Product.api.Controllers {
         }
 
         [HttpPost ()]
-        public async Task<IActionResult> AddAsync (Domain.Models.Product.Product product) {
+        public async Task<IActionResult> AddAsync (ProductRequest request) {
 
+            if (!request.IsValid)
+                return BadRequest (request.Erros);
+
+            var product = (Domain.Models.Product.Product) request;
             product.Id = MongoDB.Bson.ObjectId.GenerateNewId (DateTime.UtcNow);
+
             await this._context.Products.InsertOneAsync (product);
 
-            return CreatedAtAction (nameof (GetByIdAsync), product);
+            var response= (ProductResponse) product;
+
+            return Ok (response);
+        }
+
+        [HttpPut ("{id}")]
+        public async Task<IActionResult> UpdateAsync ([FromRoute] string id, [FromBody] ProductRequest request) {
+
+            if (!request.IsValid)
+                return BadRequest (request.Erros);
+
+            ObjectId objId = ObjectId.Parse (id);
+
+            var product = (Domain.Models.Product.Product) request;
+            product.Id = objId;
+
+            var filter = new FilterDefinitionBuilder<Domain.Models.Product.Product> ()
+                .Eq (nameof (product.Id), objId);
+
+            var response = await this._context.Products.ReplaceOneAsync (filter, product, null);
+
+            return Ok (response.UpsertedId.ToString ());
         }
 
         [HttpDelete ("{id}")]
@@ -59,21 +86,6 @@ namespace Product.api.Controllers {
             var response = await this._context.Products.FindOneAndDeleteAsync (filter);
 
             return NoContent ();
-        }
-
-        [HttpPut ("{id}")]
-        public async Task<IActionResult> DeleteAsync ([FromRoute] string id, [FromBody] Domain.Models.Product.Product product) {
-
-            ObjectId objId = ObjectId.Parse (id);
-
-            FilterDefinition<Domain.Models.Product.Product> filter = new FilterDefinitionBuilder<Domain.Models.Product.Product> ().Where (x => x.Id == objId);
-
-            // var response = await this._context.Products.FindOneAndUpdateAsync (
-            //        filter, 
-            //         new UpdateDefinitionBuilder<Domain.Models.Product.Product> (),
-            //         null, null);     
-
-            return Ok ();
         }
 
     }
