@@ -61,7 +61,7 @@ namespace Product.api.Controllers {
             return NoContent ();
         }
 
-        [HttpDelete ("{id}")]
+        [HttpPut ("{id}")]
         public async Task<IActionResult> DeleteAsync ([FromRoute] string id, [FromBody] Domain.Models.Product.Product product) {
 
             ObjectId objId = ObjectId.Parse (id);
