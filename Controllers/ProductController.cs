@@ -48,13 +48,11 @@ namespace Product.api.Controllers {
                 return BadRequest (request.Erros);
 
             var product = (Domain.Models.Product.Product) request;
-            product.Id = MongoDB.Bson.ObjectId.GenerateNewId (DateTime.UtcNow);
+            product.Id = MongoDB.Bson.ObjectId.GenerateNewId (DateTime.Now);
 
             await this._context.Products.InsertOneAsync (product);
 
-            var response = (ProductResponse) product;
-
-            return Ok (response);
+            return Ok ((ProductResponse) product);
         }
 
         [HttpPut ("{id}")]
@@ -73,7 +71,7 @@ namespace Product.api.Controllers {
 
             var response = await this._context.Products.ReplaceOneAsync (filter, product, null);
 
-            return Ok (response.UpsertedId.ToString ());
+            return Ok ((ProductResponse) product);
         }
 
         [HttpDelete ("{id}")]

@@ -6,8 +6,7 @@ namespace Product.api.Domain.Models {
     public class BaseModel {
         [BsonId]
         public ObjectId Id { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
-        public DateTime? DeleteDate { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
     }
 }

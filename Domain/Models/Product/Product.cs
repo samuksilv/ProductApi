@@ -16,7 +16,7 @@ namespace Product.api.Domain.Models.Product {
                 Code = request.Code,
                 Details = new ProductDetails {
                     Quantity = request.Quantity,
-                    ExpirationDate = request.ExpirationDate,
+                    ExpirationDate = DateTime.Parse (request.ExpirationDate)
                 },
             };
         }

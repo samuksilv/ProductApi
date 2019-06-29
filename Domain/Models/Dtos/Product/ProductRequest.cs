@@ -11,7 +11,7 @@ namespace Product.api.Domain.Models.Dtos.Product {
         public string Name { get; set; }
         public string Code { get; set; }
         public long Quantity { get; set; }
-        public DateTime ExpirationDate { get; set; }
+        public string ExpirationDate { get; set; }
 
         [JsonIgnore]
         protected override ValidationResult ValidatorResult {
@@ -27,8 +27,14 @@ namespace Product.api.Domain.Models.Dtos.Product {
             RuleFor (x => x.Name).NotEmpty ().Length (1, 100);
             RuleFor (x => x.Code).NotEmpty ().Length (1, 100);
             RuleFor (x => x.Quantity).NotNull ();
-            RuleFor (x => x.ExpirationDate).NotNull ().When (x => x.ExpirationDate < DateTime.UtcNow)
-                .WithMessage ("Can't insert overdue product");
+
+            RuleFor (x => x.ExpirationDate)
+                .Cascade (CascadeMode.StopOnFirstFailure)
+                .NotEmpty ()
+                .Must (dateString => DateTime.TryParse (dateString, out DateTime date))
+                    .WithMessage ("Date format invalid.")
+                .Must (x => DateTime.Parse (x) >= DateTime.Now.Date)
+                    .WithMessage ("Can't insert overdue product.");
 
         }
     }
