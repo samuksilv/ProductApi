@@ -1,4 +1,5 @@
 using MongoDB.Driver;
+using Product.api.Infrastructure.Data.Connections;
 
 namespace Product.api.Infrastructure.Data.Contexts {
     public abstract class BaseContext {

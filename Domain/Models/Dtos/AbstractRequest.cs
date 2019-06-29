@@ -24,10 +24,12 @@ namespace Product.api.Domain.Models.Dtos {
                     return null;
                 } 
                 else {
-                    IEnumerable<string> errors = ValidatorResult?.Errors?.Select (x => x.ErrorMessage);
-                    if (errors == null) return null;
 
-                    return string.Join (' ', errors);
+                    return ValidatorResult?.ToString(" "); 
+                    // IEnumerable<string> errors = ValidatorResult?.Errors?.Select (x => x.ErrorMessage);
+                    // if (errors == null) return null;
+
+                    // return string.Join (' ', errors);
                 }
             }
         }

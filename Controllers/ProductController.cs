@@ -52,7 +52,7 @@ namespace Product.api.Controllers {
 
             await this._context.Products.InsertOneAsync (product);
 
-            var response= (ProductResponse) product;
+            var response = (ProductResponse) product;
 
             return Ok (response);
         }
