@@ -4,7 +4,7 @@ using Product.api.Domain.Models.User;
 namespace Product.api.Infrastructure.Data.Contexts {
     public class UserContext : BaseContext {
 
-        protected static string DatabaseName = "User";
+        protected static string DatabaseName = "user";
 
         public UserContext (MongoDBConnection connection) : base (connection, DatabaseName) { }
 

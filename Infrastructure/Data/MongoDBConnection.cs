@@ -14,7 +14,8 @@ namespace Product.api.Infrastructure.Data {
                 this.ConnectionString = connectionString;
                 this.IsSsl = isSsl;
 
-                var settings = MongoClientSettings.FromConnectionString (this.ConnectionString);
+                // var settings = MongoClientSettings.FromConnectionString (this.ConnectionString);
+                var settings = MongoClientSettings.FromUrl (new MongoUrl(this.ConnectionString));
                 if (this.IsSsl)
                     settings.SslSettings = new SslSettings { EnabledSslProtocols = SslProtocols.Tls12 };
 
