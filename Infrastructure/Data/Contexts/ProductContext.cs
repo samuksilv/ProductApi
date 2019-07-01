@@ -1,11 +1,12 @@
 using MongoDB.Driver;
+using Product.api.Infrastructure.Data.Connections;
 
 namespace Product.api.Infrastructure.Data.Contexts {
     public class ProductContext : BaseContext {
 
-        protected static string DatabaseName = "Product";
+        protected static string DatabaseName = "product";
 
-        public ProductContext (MongoDBConnection connection) : base (connection, DatabaseName) { }
+        public ProductContext (ProductDatabase connection) : base (connection, DatabaseName) { }
 
         public IMongoCollection<Domain.Models.Product.Product> Products {
             get {

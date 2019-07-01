@@ -1,10 +1,12 @@
 using System;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Product.api.Domain.Models {
     public class BaseModel {
-        public Guid Id { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
-        public DateTime? DeleteDate { get; set; }
+        [BsonId]
+        public ObjectId Id { get; set; }
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
 
     }
 }

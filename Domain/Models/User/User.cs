@@ -10,6 +10,7 @@ namespace Product.api.Domain.Models.User {
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+        
         public string Phone { get; set; }
 
         [Required]
